@@ -13,12 +13,10 @@ ls ${PREFIX}* \
     target="median-$( printf "%04d" $num ).png"
     if ! [ -e "${target}" -a "${target}" -nt "${compare_with}" ]; then
         echo "Creating ${target}"
-        convert $REPLY -scale 800x600 \
-            -colorspace LMS \
-                -evaluate-sequence median \
-            -colorspace RGB \
-            \( +clone -colorspace Log -gamma 1.7 -colorspace RGB \) \
-            -compose soft-light -composite \
+        convert $REPLY \
+            -evaluate-sequence median \
+            -scale 800x600 \
+            +sharpen 4x \
             "${target}"
     else
         echo "Skipping ${target}"
