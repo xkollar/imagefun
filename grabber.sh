@@ -1,25 +1,26 @@
 #!/usr/bin/env bash
 
-URL=http://www.hvezdarna.cz/kamera/kamera1920.jpg
+URL="${1:-http://www.hvezdarna.cz/kamera/kamera1920.jpg}"
+PREFIX="${2:-camera-}"
+SLEEPTIME=50
 
-starttime=$( date +%FT%T )
-basename="camera-${starttime}-"
+FETCH=( wget -q -O )
 
 n=0;
 
-currname="${basename}${n}.jpg"
-wget "${URL}" -O "${currname}"
+prevname=$( ls -1r /dev/null ${PREFIX}* | head -n1 )
+
+echo "Detected last from previous run: $prevname"
 
 while true; do
-    sleep 30
-    currname="${basename}${n}.jpg"
-    nextname="${basename}$((n+1)).jpg"
-    wget "${URL}" -O "${nextname}"
-    if diff -q "${nextname}" "${currname}"; then
-        echo No difference...
-        rm "${nextname}"
-        continue
+    currname="${PREFIX}$( date -u +%FT%TZ ).jpg"
+    "${FETCH[@]}" "${currname}" "${URL}"
+    if diff -q "${prevname}" "${currname}" >/dev/null ; then
+        echo "Nothing new..."
+        rm "${currname}"
+    else
+        echo "New image '${currname}'"
+        prevname="${currname}"
     fi
-    echo New image...
-    let n+=1
+    sleep "${SLEEPTIME}"
 done
