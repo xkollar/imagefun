@@ -33,7 +33,7 @@ function main() {
     \( +clone \) -append \
     -gravity southeast -splice "${BODERR}x${BODERB}" \
     -fill white -stroke black  -font "Bookman-Demi" -pointsize 20 \
-    -gravity southwest  -annotate 0 ' ID Photo: 35mm x 45mm (+1mm boder on each side)' \
+    -gravity southwest  -annotate 0 ' ID Photo: 35mm x 45mm (+1mm boder on each side)\n' \
     "${img_out}"
 
   rm -rf "${tmp}"
