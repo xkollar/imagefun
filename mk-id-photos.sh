@@ -10,7 +10,7 @@
 
 set -eu
 
-readonly COEF=10
+readonly COEF=20
 readonly FREE=1
 readonly RESOLUTION=$((COEF * (35 + 2*FREE)))x$((COEF * (45 + 2*FREE)))
 readonly BODERR=$((COEF * (10 - 4*2*FREE)))
